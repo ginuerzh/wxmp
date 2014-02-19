@@ -15,6 +15,7 @@ func main() {
 	wx.Init("/")
 
 	wx.HandleFunc(mp.MsgTypeText, func(reply mp.MessageReplyer, m *mp.Message) {
+		log.Println("receive message:" + m.Content)
 		if err := reply.ReplyText("今日自驾: " + m.Content); err != nil {
 			log.Println(err)
 		}
