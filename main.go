@@ -36,12 +36,12 @@ func main() {
 			}
 		case mp.MsgTypeNews:
 			articles := make([]mp.Article, 2)
-			articles[0].Title = "云南我们来了"
+			articles[0].Title = "自驾3500公里 来到大理 丽江 感受云南的自然风光"
 			articles[0].Description = "自驾3500公里 来到大理 丽江 感受云南的自然风光"
-			articles[0].PicUrl = "http://106.187.48.51:8081/6/2710b07cffba_2/640X853.jpg"
+			articles[0].PicUrl = "http://106.187.48.51:8081/6/2710b07cffba_1/640X853.jpg"
 			articles[0].Url = "http://club.autohome.com.cn/bbs/threadowner-o-200042-27866947-1.html#pvareaid=101435"
 
-			articles[1].Title = "秀才过双节"
+			articles[1].Title = "秀才过双节，看价值两亿的树桩桩！"
 			articles[1].Description = "秀才过双节，看价值两亿的树桩桩！"
 			articles[1].PicUrl = "http://106.187.48.51:8081/7/2791b941c5bc_1/640X480.jpg"
 			articles[1].Url = "http://club.autohome.com.cn/bbs/threadowner-o-200042-27866796-1.html#pvareaid=101435"
