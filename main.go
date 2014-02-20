@@ -3,9 +3,11 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/ginuerzh/weixin/mp"
 	"io/ioutil"
 	"log"
+	"time"
 )
 
 func init() {
@@ -16,9 +18,24 @@ func main() {
 	wx := mp.New("wxb6ebfdef79a09651", "abd7052dc840112a9fbffe39e6fbeaca", "1234567890")
 	wx.Init("/")
 
-	wx.HandleFunc(mp.MsgTypeText, func(w mp.MessageReplyer, m *mp.Message) {
-		log.Println("receive message:" + m.Content)
+	total, openIds, next, err := wx.Followers("")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("followers:")
+	fmt.Println("total:", total, "next:", next)
+	for _, id := range openIds {
+		fmt.Println(id)
+		user, err := wx.UserInfo(id, mp.LangCN)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		fmt.Println("\t", user.Nickname, user.Country, user.Province, user.City, user.Sex,
+			time.Unix(user.SubscribeTime, 0).Format("2006-01-02 15:04:05"))
+	}
 
+	wx.HandleFunc(mp.MsgTypeText, func(w mp.MessageReplyer, m *mp.Message) {
 		switch mp.MsgType(m.Content) {
 		case mp.MsgTypeImage:
 			b, err := ioutil.ReadFile("image.jpg")
