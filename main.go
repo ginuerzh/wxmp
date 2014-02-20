@@ -16,7 +16,11 @@ func init() {
 
 func main() {
 	wx := mp.New("wxb6ebfdef79a09651", "abd7052dc840112a9fbffe39e6fbeaca", "1234567890")
-	wx.Init("/")
+
+	if err := wx.RefreshToken(3); err != nil {
+		log.Fatalln("refresh token failed!")
+	}
+	go wx.RefreshToken(0)
 
 	total, openIds, next, err := wx.Followers("")
 	if err != nil {
@@ -35,9 +39,9 @@ func main() {
 			time.Unix(user.SubscribeTime, 0).Format("2006-01-02 15:04:05"))
 	}
 
-	wx.HandleFunc(mp.MsgTypeText, func(w mp.MessageReplyer, m *mp.Message) {
+	wx.HandleFunc(mp.MsgText, func(w mp.Replyer, m *mp.Message) {
 		switch mp.MsgType(m.Content) {
-		case mp.MsgTypeImage:
+		case mp.MsgImage:
 			b, err := ioutil.ReadFile("image.jpg")
 			if err != nil {
 				log.Println(err)
@@ -51,7 +55,7 @@ func main() {
 			if err := w.ReplyImage(imageId); err != nil {
 				log.Println(err)
 			}
-		case mp.MsgTypeNews:
+		case mp.MsgNews:
 			articles := make([]mp.Article, 2)
 			articles[0].Title = "自驾3500公里 来到大理 丽江 感受云南的自然风光"
 			articles[0].Description = "自驾3500公里 来到大理 丽江 感受云南的自然风光"
@@ -66,7 +70,7 @@ func main() {
 			if err := w.ReplyImageText(articles); err != nil {
 				log.Println(err)
 			}
-		case mp.MsgTypeText:
+		case mp.MsgText:
 			fallthrough
 		default:
 			if err := w.ReplyText("今日自驾: " + m.Content); err != nil {
@@ -74,5 +78,5 @@ func main() {
 			}
 		}
 	})
-	wx.Run(8801)
+	wx.Run("/", 8801)
 }
